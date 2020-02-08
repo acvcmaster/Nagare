@@ -1,7 +1,7 @@
 .player-grid {
     display: grid;
     grid-template-columns: 50vw 50vw;
-    grid-template-rows: 63vh 37vh;
+    grid-template-rows: 70vh 30vh;
     grid-template-areas:
         "a b"
         "c b";        
@@ -70,7 +70,7 @@
     .album-cover {
         grid-row: 2/3;
         grid-column: 2/3;
-        background-image: url('http://10.0.0.35:22781/Song/GetCoverArt?id=32');
+        // background-image: url('http://10.0.0.35:22781/Song/GetCoverArt?id=43');
     }
     .info-container {
         grid-row: 3/4;
@@ -84,7 +84,7 @@
 @media only screen and (max-width: 630px) {
     .player-grid {
         grid-template-columns: 100vw;
-        grid-template-rows: 63vh 37vh;
+        grid-template-rows: 70vh 30vh;
         grid-template-areas:
             "a"
             "c";

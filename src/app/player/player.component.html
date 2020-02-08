@@ -1,18 +1,20 @@
 <div class="responsive-page">
     <div class="player-grid">
-        <div class="song-container">
-            <div class="album-cover icon"></div>
+        <div class="song-container" *ngIf="currentSong">
+            <div class="album-cover icon" #albumCover [ngStyle]="{'background-image':  'url(' + currentSong.cover_art_url + ')'}"></div>
             <div class="info-container">
-                <b>Blue Star</b>
-                <br>八王子P　feat. 初音ミク
+                <b>{{currentSong.name}}</b>
+                <br>{{currentSong.artist}}
             </div>
         </div>
-        <div class="song-list"></div>
+        <div class="song-list">
+
+        </div>
         <div class="controls">
             <input type="range" class="time-bar">
-            <div class="play-previous icon"></div>
+            <div class="play-previous icon" (click)="previousSong()"></div>
             <div class="play-pause icon" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
-            <div class="play-next icon"></div>
+            <div class="play-next icon" (click)="nextSong()"></div>
             <div class="shuffle icon" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}"></div>
             <div class="show-lyrics icon"></div>
         </div>
