@@ -12,4 +12,7 @@ export class PlayerComponent implements OnInit {
   ngOnInit() {
   }
 
+  playing(): boolean {
+    return false;
+  }
 }

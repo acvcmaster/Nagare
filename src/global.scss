@@ -6,6 +6,14 @@
     background-color: #1e1e1e;
     color: lightgrey;
     height: 100vh;
-    width: 100hh;
+    width: 100vw;
     overflow: hidden;
+}
+
+.play-icon {
+    background-image: url('src/assets/play.svg');
+}
+
+.pause-icon {
+    background-image: url('src/assets/pause.svg');
 }
