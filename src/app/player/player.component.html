@@ -1,9 +1,15 @@
 <div class="responsive-page">
     <div class="player-grid">
-        <div class="song-container"></div>
+        <div class="song-container">
+            <img src="http://10.0.0.35:22781/Song/GetCoverArt?id=44">
+        </div>
         <div class="song-list"></div>
         <div class="controls">
-            <div class="play-pause" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
+            <div class="play-previous icon"></div>
+            <div class="play-pause icon" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
+            <div class="play-next icon"></div>
+            <div class="shuffle icon" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}"></div>
+            <div class="show-lyrics icon"></div>
         </div>
     </div>
 </div>

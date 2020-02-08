@@ -8,6 +8,10 @@
         .song-container {
             grid-area: a;
             background-color: red;
+            img {
+                // object-position: center;
+                // object-fit: contain;
+            }
         }
         
         .song-list {
@@ -22,14 +26,37 @@
     display: grid;
     grid-template-columns: 22.73% 15.91% 22.73% 15.91% 22.73%;
     grid-template-rows: 33.33% 33.33% 33.33%;
-    .play-pause {
-        grid-column: 3/4;
+    .show-lyrics {
         grid-row: 2/3;
-        border: 1px solid lightgrey;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
+        grid-column: 1/2;
+        margin-left: 25%;
+        margin-right: 25%;
     }
+    .play-pause {
+        grid-row: 2/3;
+        grid-column: 3/4;
+    }
+    .play-previous {
+        grid-row: 2/3;
+        grid-column: 2/3;
+    }
+    .play-next {
+        grid-row: 2/3;
+        grid-column: 4/5;
+    }
+    .shuffle {
+        grid-row: 2/3;
+        grid-column: 5/6;
+        margin-left: 25%;
+        margin-right: 25%;
+    }
+}
+
+.icon {
+    border: 1px solid lightgrey;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 @media only screen and (max-width: 630px) {

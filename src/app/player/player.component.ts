@@ -9,6 +9,8 @@ export class PlayerComponent implements OnInit {
 
   constructor() { }
 
+  shuffle = true;
+
   ngOnInit() {
   }
 
