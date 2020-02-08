@@ -22,13 +22,13 @@
     display: grid;
     grid-template-columns: 22.73% 15.91% 22.73% 15.91% 22.73%;
     grid-template-rows: 33.33% 33.33% 33.33%;
-    grid-template-areas:
-    "d d d d d"
-    "d d e d d"
-    "d d d d d";
-    .button-container {
-        grid-area: e;
+    .play-pause {
+        grid-column: 3/4;
+        grid-row: 2/3;
         border: 1px solid lightgrey;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
     }
 }
 

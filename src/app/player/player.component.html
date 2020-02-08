@@ -3,9 +3,7 @@
         <div class="song-container"></div>
         <div class="song-list"></div>
         <div class="controls">
-            <div class="button-container">
-
-            </div>
+            <div class="play-pause" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
         </div>
     </div>
 </div>
