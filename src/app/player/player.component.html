@@ -1,10 +1,15 @@
 <div class="responsive-page">
     <div class="player-grid">
         <div class="song-container">
-            <img src="http://10.0.0.35:22781/Song/GetCoverArt?id=44">
+            <div class="album-cover icon"></div>
+            <div class="info-container">
+                <b>Blue Star</b>
+                <br>八王子P　feat. 初音ミク
+            </div>
         </div>
         <div class="song-list"></div>
         <div class="controls">
+            <input type="range" class="time-bar">
             <div class="play-previous icon"></div>
             <div class="play-pause icon" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
             <div class="play-next icon"></div>
