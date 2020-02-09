@@ -11,7 +11,7 @@
     grid-area: c;
     display: grid;
     grid-template-columns: 22.73% 15.91% 22.73% 15.91% 22.73%;
-    grid-template-rows: 33.33% 33.33% 33.33%;
+    grid-template-rows: repeat(3, 3fr);
     .time-bar {
         grid-row: 1/2;
         grid-column: 1/6;
@@ -66,7 +66,6 @@
     .album-cover {
         grid-row: 2/3;
         grid-column: 2/3;
-        // background-image: url('http://10.0.0.35:22781/Song/GetCoverArt?id=43');
     }
     .info-container {
         grid-row: 3/4;
@@ -93,27 +92,29 @@
         color: black;
     }
     .song-list-search {
-        border-bottom: 1px solid white;
+        display: flex;
+        height: 50%;
+        width: 75%;
         input {
-            border-radius: 5px;
-            border: 1px solid white;
-            width: 38%;
-            padding-left: 12%;
-            height: 50%;
-            margin-left: 25%;
+            flex: 1;
+            border: 2px solid white;
+            border-radius: 0px 2px 2px 0;
             background-color: #1e1e1e;
             color: lightgrey;
             outline: none;
+            width: 85%;
+            padding-left: 0.5%;
         }
-    }
-    .song-list-addon {
-        float: left;
-        background-color: orange;
-        color: black;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        height: 50%;
-        width: 12%;
+        .song-list-addon {
+            background-color: orange;
+            color: black;
+            border: 2px solid white;
+            border-radius: 2px 0 0 2px;
+            width: 15%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 }
 

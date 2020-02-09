@@ -1,7 +1,8 @@
 <div class="responsive-page">
     <div class="player-grid">
         <div class="song-container" *ngIf="currentSong">
-            <div class="album-cover icon" #albumCover [ngStyle]="{'background-image':  'url(' + currentSong.cover_art_url + ')'}"></div>
+            <div class="album-cover icon" #albumCover
+                [ngStyle]="{'background-image':  'url(' + currentSong.cover_art_url + ')'}"></div>
             <div class="info-container">
                 <b>{{currentSong.name}}</b>
                 <br>{{currentSong.artist}}
@@ -10,7 +11,9 @@
         </div>
         <div class="song-list" *ngIf="currentPlaylist?.songs?.length">
             <div class="song-list-search">
-                <div class="song-list-addon">Artist</div>
+                <div class="song-list-addon">
+                    <b>Artist</b>
+                </div>
                 <input type="text" #search (input)="getFilteredPlaylist(search.value)">
             </div>
             <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)">
@@ -23,7 +26,8 @@
             <div class="play-previous icon" (click)="changeSong(true)"></div>
             <div class="play-pause icon" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
             <div class="play-next icon" (click)="changeSong()"></div>
-            <div class="shuffle icon" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}" (click)="shuffle = !shuffle"></div>
+            <div class="shuffle icon" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}"
+                (click)="shuffle = !shuffle"></div>
             <div class="show-lyrics icon"></div>
         </div>
     </div>
