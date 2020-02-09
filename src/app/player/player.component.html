@@ -5,17 +5,25 @@
             <div class="info-container">
                 <b>{{currentSong.name}}</b>
                 <br>{{currentSong.artist}}
+                <br>{{currentSong.album}}
             </div>
         </div>
-        <div class="song-list">
-
+        <div class="song-list" *ngIf="currentPlaylist?.songs?.length">
+            <div class="song-list-search">
+                <div class="song-list-addon">Artist</div>
+                <input type="text" #search (input)="getFilteredPlaylist(search.value)">
+            </div>
+            <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)">
+                <b>{{song.name}}</b>
+                <br>{{song.artist}}
+            </div>
         </div>
         <div class="controls">
             <input type="range" class="time-bar">
-            <div class="play-previous icon" (click)="previousSong()"></div>
+            <div class="play-previous icon" (click)="changeSong(true)"></div>
             <div class="play-pause icon" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
-            <div class="play-next icon" (click)="nextSong()"></div>
-            <div class="shuffle icon" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}"></div>
+            <div class="play-next icon" (click)="changeSong()"></div>
+            <div class="shuffle icon" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}" (click)="shuffle = !shuffle"></div>
             <div class="show-lyrics icon"></div>
         </div>
     </div>

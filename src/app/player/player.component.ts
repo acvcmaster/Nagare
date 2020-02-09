@@ -20,6 +20,7 @@ export class PlayerComponent implements OnInit {
   currentPlaylist: Playlist;
   currentSong: Song;
   currentSongIndex = 0;
+  filteredPlaylist: Song[];
 
   ngOnInit() {
     this.playlistService.getPlaylists().subscribe(playlist => {
@@ -27,6 +28,7 @@ export class PlayerComponent implements OnInit {
         this.playlists = playlist;
         this.currentPlaylist = this.playlists[0];
         this.currentSong = this.currentPlaylist.songs[this.currentSongIndex];
+        this.getFilteredPlaylist();
       }
     });
   }
@@ -35,17 +37,25 @@ export class PlayerComponent implements OnInit {
     return false;
   }
 
-  nextSong() {
+  changeSong(previous?: boolean) {
     if (this.currentPlaylist && this.currentPlaylist.songs && this.currentPlaylist.songs.length) {
-      this.currentSongIndex = (this.currentSongIndex + 1) % this.currentPlaylist.songs.length;
+      this.currentSongIndex = (this.currentSongIndex + (previous ? -1 : 1)) % this.currentPlaylist.songs.length;
+      this.currentSongIndex = this.currentSongIndex >= 0 ? this.currentSongIndex :
+        (this.currentPlaylist.songs.length + this.currentSongIndex);
       this.currentSong = this.currentPlaylist.songs[this.currentSongIndex];
     }
   }
 
-  previousSong() {
-    if (this.currentPlaylist && this.currentPlaylist.songs && this.currentPlaylist.songs.length) {
-      // implement
-      this.currentSong = this.currentPlaylist.songs[this.currentSongIndex];
+  selectSong(song: Song) {
+    this.currentSong = song;
+  }
+
+  getFilteredPlaylist(filter?: string) {
+    if (!filter) {
+      this.filteredPlaylist = this.currentPlaylist.songs;
+    } else {
+      this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
+        song.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
     }
   }
 }
