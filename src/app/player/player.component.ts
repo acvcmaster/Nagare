@@ -13,7 +13,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   constructor(private playlistService: PlaylistService) { }
 
-  @ViewChild('albumCover', {static: false}) albumCover: ElementRef;
+  @ViewChild('search', {static: false}) search: ElementRef;
   shuffle = true;
   playlists: Playlist[];
   subscriptions = new Subscription();
@@ -22,8 +22,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   currentSongIndex = 0;
   filteredPlaylist: Song[];
   searchTypeIndex = 0;
-  searchTypes = ['Song', 'Artist'];
-  searchTypeColors = ['lime', 'orange'];
+  searchTypes = ['Song', 'Artist', 'Album'];
+  searchTypeColors = ['lime', 'orange', 'orangered'];
+  searchTypeIcons = ['music_note', 'person', 'album'];
 
   ngOnInit() {
     this.subscriptions.add(this.playlistService.getPlaylists().subscribe(playlist => {
@@ -64,18 +65,29 @@ export class PlayerComponent implements OnInit, OnDestroy {
       switch (this.searchTypes[this.searchTypeIndex]) {
         case 'Artist':
           this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
-            song.artist.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+            (song.artist ? song.artist : '').toLowerCase().indexOf(filter.toLowerCase()) !== -1);
           break;
         case 'Song':
           this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
-            song.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+            (song.name ? song.name : '').toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+          break;
+        case 'Album':
+          this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
+            (song.album ? song.album : '').toLowerCase().indexOf(filter.toLowerCase()) !== -1);
           break;
       }
     }
   }
 
-  nextSearchType(filter?: string) {
+  nextSearchType() {
     this.searchTypeIndex = (this.searchTypeIndex + 1) % this.searchTypes.length;
-    this.getFilteredPlaylist(filter);
+    this.search.nativeElement.value = '';
+    this.getFilteredPlaylist();
+  }
+
+  searchAlbum(album: string) {
+    this.searchTypeIndex = this.searchTypes.findIndex(item => item === 'Album');
+    this.search.nativeElement.value = album;
+    this.getFilteredPlaylist(album);
   }
 }

@@ -8,9 +8,10 @@
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    font-family: Helvetica;
+    font-family: "Hiragino Sans", Helvetica;
 }
 
+// #region Assets
 .play-icon {
     background-image: url('src/assets/play.svg');
 }
@@ -37,4 +38,40 @@
 
 .show-lyrics {
     background-image: url('src/assets/show-playlist.svg');
+}
+
+.close {
+    background-image: url('src/assets/close.svg');
+}
+// #endregion
+
+// #region Icons
+.icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.icon.center {
+    background-position: center;
+}
+
+.icon.right {
+    background-position: right;
+}
+
+.icon.left {
+    background-position: left;
+}
+
+.icon.top {
+    background-position: top;
+}
+// #endregion
+
+.bold {
+    font-weight: bold;
+}
+
+.large-font {
+    font-size: 20px;
 }
