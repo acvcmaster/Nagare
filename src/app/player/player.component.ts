@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Playlist } from './playlist/playlist.model';
 import { PlaylistService } from './playlist/playlist.service';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { Song } from './song/song.model';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent implements OnInit, OnDestroy {
 
   constructor(private playlistService: PlaylistService) { }
 
@@ -21,16 +21,23 @@ export class PlayerComponent implements OnInit {
   currentSong: Song;
   currentSongIndex = 0;
   filteredPlaylist: Song[];
+  searchTypeIndex = 0;
+  searchTypes = ['Song', 'Artist'];
+  searchTypeColors = ['lime', 'orange'];
 
   ngOnInit() {
-    this.playlistService.getPlaylists().subscribe(playlist => {
+    this.subscriptions.add(this.playlistService.getPlaylists().subscribe(playlist => {
       if (playlist && playlist.length) {
         this.playlists = playlist;
         this.currentPlaylist = this.playlists[0];
         this.currentSong = this.currentPlaylist.songs[this.currentSongIndex];
         this.getFilteredPlaylist();
       }
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   playing(): boolean {
@@ -54,8 +61,21 @@ export class PlayerComponent implements OnInit {
     if (!filter) {
       this.filteredPlaylist = this.currentPlaylist.songs;
     } else {
-      this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
-        song.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+      switch (this.searchTypes[this.searchTypeIndex]) {
+        case 'Artist':
+          this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
+            song.artist.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+          break;
+        case 'Song':
+          this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
+            song.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+          break;
+      }
     }
+  }
+
+  nextSearchType(filter?: string) {
+    this.searchTypeIndex = (this.searchTypeIndex + 1) % this.searchTypes.length;
+    this.getFilteredPlaylist(filter);
   }
 }

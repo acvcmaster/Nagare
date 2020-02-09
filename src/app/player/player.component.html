@@ -11,8 +11,8 @@
         </div>
         <div class="song-list" *ngIf="currentPlaylist?.songs?.length">
             <div class="song-list-search">
-                <div class="song-list-addon">
-                    <b>Artist</b>
+                <div class="song-list-addon" (click)="nextSearchType(search.value)" [ngStyle]="{'background-color': searchTypeColors[searchTypeIndex]}">
+                    <b>{{searchTypes[searchTypeIndex]}}</b>
                 </div>
                 <input type="text" #search (input)="getFilteredPlaylist(search.value)">
             </div>

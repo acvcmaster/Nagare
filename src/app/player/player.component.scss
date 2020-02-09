@@ -114,6 +114,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            b {
+                user-select: none;
+            }
         }
     }
 }
