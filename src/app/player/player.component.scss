@@ -123,6 +123,16 @@
             user-select: none;
         }
     }
+    .song-list-not-found {
+        grid-row: 2/15;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        i {
+            margin-right: 1%;
+        }
+    }
 }
 
 @media only screen and (max-width: 1024px) {

@@ -21,9 +21,15 @@
                 </div>
                 <input type="text" #search (input)="getFilteredPlaylist(search.value)">
             </div>
-            <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)">
-                <b>{{song.name}}</b>
-                <br>{{song.artist}}
+            <div *ngIf="filteredPlaylist?.length">
+                <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)">
+                    <b>{{song.name}}</b>
+                    <br>{{song.artist}}
+                </div>
+            </div>
+            <div *ngIf="!filteredPlaylist?.length" class="song-list-not-found">
+                <i class="material-icons">error</i>
+                No songs found!
             </div>
         </div>
         <div class="controls">
