@@ -56,6 +56,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   selectSong(song: Song) {
     this.currentSong = song;
+    this.currentSongIndex = this.currentPlaylist.songs.findIndex(item => item === song);
   }
 
   getFilteredPlaylist(filter?: string) {
@@ -89,5 +90,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.searchTypeIndex = this.searchTypes.findIndex(item => item === 'Album');
     this.search.nativeElement.value = album;
     this.getFilteredPlaylist(album);
+  }
+
+  selectFirstSong() {
+    if (this.filteredPlaylist && this.filteredPlaylist.length) {
+      this.currentSong = this.filteredPlaylist[0];
+      this.currentSongIndex = this.currentPlaylist.songs.findIndex(item => item === this.currentSong);
+      this.search.nativeElement.value = '';
+      this.getFilteredPlaylist();
+    }
   }
 }

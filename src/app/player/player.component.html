@@ -19,7 +19,7 @@
                     {{searchTypes[searchTypeIndex]}}
                     <i class="material-icons">{{searchTypeIcons[searchTypeIndex]}}</i>
                 </div>
-                <input type="text" #search (input)="getFilteredPlaylist(search.value)">
+                <input type="text" #search (input)="getFilteredPlaylist(search.value)" (keydown.enter)="selectFirstSong()">
             </div>
             <div *ngIf="filteredPlaylist?.length">
                 <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)">
