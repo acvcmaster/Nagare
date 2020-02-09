@@ -8,7 +8,6 @@
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    font-family: "Hiragino Sans", Helvetica;
 }
 
 // #region Assets
@@ -75,3 +74,22 @@
 .large-font {
     font-size: 20px;
 }
+
+.bordered {
+    border: 1px solid white;
+    border-radius: 3px;
+}
+
+
+// #region font
+// @font-face {
+//     font-family: 'test';
+//     font-style: normal;
+//     font-weight: 400;
+//     src: url(https://raw.githubusercontent.com/basvodde/scrumprimer/master/primer_source_files/overview_translations/scrum_japanese/Collected%20Fonts/Hiragino%20Kaku%20Gothic%20Pro/%E3%83%92%E3%83%A9%E3%82%AD%E3%82%99%E3%83%8E%E8%A7%92%E3%82%B3%E3%82%99%20Pro%20W6.otf) format('otf');
+//   }
+
+.responsive-page {
+    font-family: 'Helvetica';
+}
+// #endregion

@@ -1,8 +1,9 @@
 <div class="responsive-page">
     <div class="player-grid">
         <div class="song-container" *ngIf="currentSong">
-            <div class="album-cover icon center" #albumCover
-                [ngStyle]="{'background-image':  'url(' + currentSong.cover_art_url + ')'}"></div>
+            <div class="album-cover icon center"
+                [ngStyle]="{'background-image':  'url(' + currentSong.cover_art_url + ')'}">
+            </div>
             <div class="info-container large-font">
                 <div class="info-container-item bold">{{currentSong.name}}</div>
                 <div class="info-container-item">{{currentSong.artist}}</div>
