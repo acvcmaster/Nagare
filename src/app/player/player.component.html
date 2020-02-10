@@ -19,7 +19,8 @@
                     {{searchTypes[searchTypeIndex]}}
                     <i class="material-icons">{{searchTypeIcons[searchTypeIndex]}}</i>
                 </div>
-                <input type="text" #search (input)="getFilteredPlaylist(search.value)" (keydown.enter)="selectFirstSong()">
+                <input type="text" #search (input)="getFilteredPlaylist(search.value)"
+                    (keydown.enter)="selectFirstSong()">
             </div>
             <div *ngIf="filteredPlaylist?.length">
                 <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)">
@@ -35,11 +36,13 @@
         <div class="controls">
             <input type="range" class="time-bar">
             <div class="play-previous icon right" (click)="changeSong(true)"></div>
-            <div class="play-pause icon center" [ngClass]="{'play-icon': !playing(), 'pause-icon': playing()}"></div>
+            <div class="play-pause icon center" [ngClass]="{'play-icon': !playing, 'pause-icon': playing}"
+                (click)="play()"></div>
             <div class="play-next icon left" (click)="changeSong()"></div>
             <div class="shuffle icon center" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}"
                 (click)="shuffle = !shuffle"></div>
             <div class="show-lyrics icon center"></div>
         </div>
+        <audio #audio></audio>
     </div>
 </div>

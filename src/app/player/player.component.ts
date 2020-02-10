@@ -14,17 +14,20 @@ export class PlayerComponent implements OnInit, OnDestroy {
   constructor(private playlistService: PlaylistService) { }
 
   @ViewChild('search', {static: false}) search: ElementRef;
+  @ViewChild('audio', {static: false}) audio: ElementRef;
   shuffle = true;
   playlists: Playlist[];
   subscriptions = new Subscription();
   currentPlaylist: Playlist;
   currentSong: Song;
+  currentPlayingSong: Song;
   currentSongIndex = 0;
   filteredPlaylist: Song[];
   searchTypeIndex = 0;
   searchTypes = ['Song', 'Artist', 'Album'];
   searchTypeColors = ['lime', 'orange', 'orangered'];
   searchTypeIcons = ['music_note', 'person', 'album'];
+  playing = false;
 
   ngOnInit() {
     this.subscriptions.add(this.playlistService.getPlaylists().subscribe(playlist => {
@@ -41,22 +44,24 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  playing(): boolean {
-    return false;
-  }
-
   changeSong(previous?: boolean) {
     if (this.currentPlaylist && this.currentPlaylist.songs && this.currentPlaylist.songs.length) {
       this.currentSongIndex = (this.currentSongIndex + (previous ? -1 : 1)) % this.currentPlaylist.songs.length;
       this.currentSongIndex = this.currentSongIndex >= 0 ? this.currentSongIndex :
         (this.currentPlaylist.songs.length + this.currentSongIndex);
-      this.currentSong = this.currentPlaylist.songs[this.currentSongIndex];
+      this.selectSong(this.currentPlaylist.songs[this.currentSongIndex], true);
     }
   }
 
-  selectSong(song: Song) {
+  selectSong(song: Song, setPlaying?: boolean) {
     this.currentSong = song;
     this.currentSongIndex = this.currentPlaylist.songs.findIndex(item => item === song);
+    if (setPlaying) {
+      this.playing = false;
+      this.audio.nativeElement.pause();
+      this.currentPlayingSong = null;
+      this.play();
+    }
   }
 
   getFilteredPlaylist(filter?: string) {
@@ -99,5 +104,18 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.search.nativeElement.value = '';
       this.getFilteredPlaylist();
     }
+  }
+
+  play() {
+    if (this.playing) {
+      this.audio.nativeElement.pause();
+    } else {
+      if (!this.currentPlayingSong) {
+        this.currentPlayingSong = this.currentSong;
+        this.audio.nativeElement.src = this.currentPlayingSong.url;
+      }
+      this.audio.nativeElement.play();
+    }
+    this.playing = !this.playing;
   }
 }

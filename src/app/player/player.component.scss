@@ -5,6 +5,9 @@
     grid-template-areas:
         "a b"
         "c b";
+    audio {
+        display: none;
+    }
 }
 
 .controls {
