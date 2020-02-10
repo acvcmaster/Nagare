@@ -82,6 +82,14 @@
             }
         }
     }
+    .currently-playing {
+        grid-row: 1/2;
+        grid-column: 2/3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+    }
 }
 
 .song-list {
@@ -98,6 +106,10 @@
     }
     .song-list-item:hover {
         background-color: white;
+        color: black;
+    }
+    .song-list-item-playing {
+        background-image: linear-gradient(to right,lightgrey, white);
         color: black;
     }
     .song-list-search {
