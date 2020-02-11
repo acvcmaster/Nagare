@@ -13,9 +13,9 @@ export class PlaylistService {
   public getPlaylists(): Observable<Playlist[]> {
     return forkJoin(
       [
-        this.http.get<Playlist>('http://10.0.0.35:22781/Playlist/GetAmplitudeJSPlaylist?id=1'),
-        this.http.get<Playlist>('http://10.0.0.35:22781/Playlist/GetAmplitudeJSPlaylist?id=3'),
-        this.http.get<Playlist>('http://10.0.0.35:22781/Playlist/GetAmplitudeJSPlaylist?id=4')
+        this.http.get<Playlist>('http://localhost:22781/Playlist/GetAmplitudeJSPlaylist?id=1'),
+        this.http.get<Playlist>('http://localhost:22781/Playlist/GetAmplitudeJSPlaylist?id=3'),
+        this.http.get<Playlist>('http://localhost:22781/Playlist/GetAmplitudeJSPlaylist?id=4')
       ]
     );
   }

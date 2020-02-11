@@ -60,9 +60,26 @@
     display: grid;
     grid-template-columns: 5% 90% 5%;
     grid-template-rows:  5% 75% 20%;
-    .album-cover {
+    .flip-card {
         grid-row: 2/3;
         grid-column: 2/3;
+        .album-cover {
+            height: 100%;
+            width: 100%;
+        }
+        .backside {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            widows: 100%;
+            .lyrics {
+                margin-top: 10%;
+                margin-left: 20%;
+                margin-right: 20%;
+                overflow: hidden;
+            }
+        }
     }
     .info-container {
         grid-row: 3/4;

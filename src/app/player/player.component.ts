@@ -30,6 +30,7 @@ export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   searchTypeColors = ['lime', 'orange', 'orangered'];
   searchTypeIcons = ['music_note', 'person', 'album'];
   playing = false;
+  flippedFlag = false;
 
   ngOnInit() {
     this.subscriptions.add(this.playlistService.getPlaylists().subscribe(playlist => {

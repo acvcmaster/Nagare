@@ -94,6 +94,22 @@
 }
 // #endregion
 
-// .flipabble {
-//     perspective: 1000px;
-// }
+// #region flipcard
+.flip-card {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    .frontside, .backside {
+        backface-visibility: hidden;
+    }
+    .backside {
+        transform: rotateY(180deg);
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.flipped {
+    transform: rotateY(180deg);
+}
+// #endregion

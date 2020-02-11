@@ -4,8 +4,15 @@
             <div class="currently-playing" *ngIf="currentPlayingSong && playing">
                 <p>playing: <b (click)="selectSong(currentPlayingSong)">{{currentPlayingSong.name}}</b></p>
             </div>
-            <div class="album-cover icon center"
-                [ngStyle]="{'background-image':  'url(' + currentSong.cover_art_url + ')'}">
+            <div class="flip-card" (click)="flippedFlag = !flippedFlag" [ngClass]="{'flipped': flippedFlag}">
+                <div class="album-cover icon center frontside"
+                    [ngStyle]="{'background-image':  'url(' + currentSong.cover_art_url + ')'}">
+                </div>
+                <div class="album-cover backside">
+                    <div class="lyrics">
+                        {{currentSong.lyrics}}
+                    </div>
+                </div>
             </div>
             <div class="info-container large-font">
                 <div class="info-container-item bold">{{currentSong.name}}</div>
