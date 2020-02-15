@@ -6,4 +6,6 @@ export class Song {
     // tslint:disable-next-line: variable-name
     cover_art_url: string;
     lyrics: string;
+    playlist_index: number;
+    rng_index: number;
 }
