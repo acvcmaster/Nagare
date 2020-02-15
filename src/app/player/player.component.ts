@@ -65,6 +65,7 @@ export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   selectSong(song: Song) {
+    this.flippedFlag = false;
     this.currentSong = song;
     this.currentSongIndex = this.currentPlaylist.songs.findIndex(item => item === song);
   }
@@ -169,5 +170,11 @@ export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentPlaylist = JSON.parse(JSON.stringify(this.currentPlaylistUnshuffled));
     }
     this.getFilteredPlaylist(filter);
+  }
+
+  flipLyrics() {
+    if (this.currentSong && this.currentSong.lyrics) {
+      this.flippedFlag = !this.flippedFlag;
+    }
   }
 }
