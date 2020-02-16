@@ -7,22 +7,21 @@ import { QueueService } from '../queue/queue.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
 
   constructor(
     public readonly searchService: SearchService,
     private readonly queueService: QueueService
   ) { }
-  @ViewChild('search', { static: false }) searchInput: ElementRef;
 
-  ngOnInit() {
+  next(value: string) {
+    this.searchService.next(value);
   }
 
-  next() {
-    this.searchService.next();
+  filter(value: string) {
+    this.searchService.filter(value);
   }
-
   first() {
-    this.queueService.selectFirst();
+
   }
 }

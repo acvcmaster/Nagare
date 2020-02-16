@@ -82,7 +82,12 @@
             height: 100%;
             widows: 100%;
             .lyrics {
-                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                i {
+                    padding-right: 1%;
+                }
             }
         }
     }
@@ -127,6 +132,10 @@
         user-select: none;
     }
     .song-list-item:hover {
+        background-color: white;
+        color: black;
+    }
+    .song-list-item-selected:not(.song-list-item-playing) {
         background-color: white;
         color: black;
     }
