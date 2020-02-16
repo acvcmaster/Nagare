@@ -26,11 +26,16 @@
         <div class="song-list">
             <app-search></app-search>
             <div *ngIf="filteredPlaylist?.length">
-                <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)"
-                    [ngClass]="{'song-list-item-playing': isPlaying(song), 'song-list-item-selected': isSelected(song)}">
-                    <b>{{song.name}}</b>
-                    <br>{{song.artist}}
-                </div>
+                <ul>
+                    <li *ngFor="let song of filteredPlaylist" [draggable]="true" (dragover)="dragOver($event)"
+                        (dragend)="dragEnd($event)" (drop)="dragDrop($event)">
+                        <div class="song-list-item" (click)="selectSong(song)"
+                            [ngClass]="{'song-list-item-playing': isPlaying(song), 'song-list-item-selected': isSelected(song)}">
+                            <b>{{song.name}}</b>
+                            <br>{{song.artist}}
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div *ngIf="!filteredPlaylist?.length" class="song-list-not-found">
                 <i class="material-icons">error</i>
@@ -38,7 +43,7 @@
             </div>
         </div>
         <div class="controls">
-            <input type="range" class="time-bar" min="0" max="1" step="0.001" value="0" [(ngModel)]="audioService.progress">
+            <input #progress type="range" class="time-bar" min="0" max="1" step="0.001" value="0" [(ngModel)]="audioService.progress">
             <div class="play-previous icon right" (click)="previousSong()"></div>
             <div class="play-pause icon center" [ngClass]="{'play-icon': !playing, 'pause-icon': playing}"
                 (click)="togglePlay()"></div>

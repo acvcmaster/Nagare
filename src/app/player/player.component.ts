@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Playlist } from './playlist/playlist.model';
 import { PlaylistService } from './playlist/playlist.service';
 import { Subscription } from 'rxjs';
@@ -18,14 +18,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
   constructor(
     private readonly queueService: QueueService,
     private readonly searchService: SearchService,
-    public readonly audioService: AudioService,
-    private changeDetectorRef: ChangeDetectorRef
+    public readonly audioService: AudioService
   ) { }
 
   playlists: Playlist[];
   subscriptions = new Subscription();
   flippedFlag = false;
   selectedSong: Song;
+  @ViewChild('progress', { static: false }) progressElement: ElementRef;
   get currentSong(): Song {
     return this.queueService.currentSong;
   }
@@ -42,7 +42,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.add(this.queueService.init().subscribe(success => success ? this.searchService.filter('') : null));
     this.subscriptions.add(this.queueService.songSubject.subscribe(song => this.selectedSong = song));
-    this.audioService.updateSubject.subscribe(() => this.changeDetectorRef.detectChanges());
   }
 
   ngOnDestroy() {
@@ -90,5 +89,18 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   toggleShuffle() {
     this.queueService.shuffled = !this.queueService.shuffled;
+  }
+
+  dragOver(event: Event) {
+    console.log(event.target);
+    return false;
+  }
+
+  dragEnd(event: Event) {
+    console.log('ended!');
+  }
+
+  dragDrop(event: Event) {
+    console.log('dropped!');
   }
 }

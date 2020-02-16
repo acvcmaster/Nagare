@@ -34,7 +34,6 @@ export class AudioService {
     }
 
     public get progress(): number {
-        console.log(this.audioElement.nativeElement.currentTime);
         return !this.audioElement.nativeElement.src ? 0 :
             this.audioElement.nativeElement.currentTime / this.audioElement.nativeElement.duration;
     }
