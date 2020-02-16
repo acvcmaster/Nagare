@@ -36,7 +36,7 @@ export class SearchService {
             this.filteredPlaylist = this.queueService.currentPlaylist.songs || [];
         } else {
             this.filteredPlaylist = this.queueService.currentPlaylist.songs.filter(song => {
-                switch (this.searchType[this.searchIndex]) {
+                switch (this.searchType) {
                     case 'Song':
                         return (song.name ? song.name : '').toLowerCase().indexOf(value.toLowerCase()) !== -1;
                     case 'Artist':
