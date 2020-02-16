@@ -134,32 +134,6 @@
         background-image: linear-gradient(to right,lightgrey, white);
         color: black;
     }
-    .song-list-search {
-        display: flex;
-        height: 50%;
-        width: 75%;
-        input {
-            flex: 1;
-            border: 2px solid white;
-            border-radius: 0px 2px 2px 0;
-            background-color: #1e1e1e;
-            color: lightgrey;
-            outline: none;
-            width: 80%;
-            padding-left: 0.5%;
-        }
-        .song-list-addon {
-            background-color: orange;
-            color: black;
-            border: 2px solid white;
-            border-radius: 2px 0 0 2px;
-            width: 20%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-        }
-    }
     .song-list-not-found {
         grid-row: 2/15;
         display: flex;

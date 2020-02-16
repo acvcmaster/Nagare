@@ -7,9 +7,10 @@ import { Song } from '../song/song.model';
     providedIn: 'root'
 })
 export class QueueService {
-    constructor(private readonly playlistService: PlaylistService) {  }
+    constructor(private readonly playlistService: PlaylistService) { }
 
     // playlist
+    public fiterType: 'Song' | 'Artist' | 'Album' = 'Song';
     playlists: Playlist[] = [];
     playlistIndex = 0;
     public get currentPlaylist(): Playlist {
@@ -22,7 +23,7 @@ export class QueueService {
     // tslint:disable-next-line: variable-name
     _shuffled = false;
     public get shuffled() { return this._shuffled; }
-    public set shuffled(s: boolean) { this._shuffled = s; this.sortPlaylist(); }
+    public set shuffled(s: boolean) { this._shuffled = s; this.sortPlaylists(); }
 
     // songs
     songIndex = 0;
@@ -39,7 +40,7 @@ export class QueueService {
                 this.playlists = playlists;
                 this.playlistIndex = 0;
                 this.acquireIndexes();
-                this.sortPlaylist();
+                this.sortPlaylists();
             }
         });
     }
@@ -57,12 +58,16 @@ export class QueueService {
         });
     }
 
-    sortPlaylist() {
+    sortPlaylists() {
         if (this.shuffled) {
             this.acquireIndexes(true);
-            this.currentPlaylist.songs.sort((a, b) => a.rng_index - b.rng_index);
-        } else {
-            this.currentPlaylist.songs.sort((a, b) => a.playlist_index - b.playlist_index);
         }
+        this.playlists.forEach(playlist => {
+            playlist.songs.sort((a, b) => this.shuffled ? a.rng_index - b.rng_index : a.playlist_index - b.playlist_index);
+        });
+    }
+
+    selectFirst() {
+        throw new Error('Method not implemented.');
     }
 }
