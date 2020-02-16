@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Playlist } from './playlist/playlist.model';
 import { PlaylistService } from './playlist/playlist.service';
 import { Subscription } from 'rxjs';
 import { Song } from './song/song.model';
 import { QueueService } from './queue/queue.service';
 import { SearchService } from './search/search.service';
+import { AudioService } from '../audio/audio.service';
 
 @Component({
   selector: 'app-player',
@@ -16,7 +17,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly queueService: QueueService,
-    private readonly searchService: SearchService
+    private readonly searchService: SearchService,
+    public readonly audioService: AudioService,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   playlists: Playlist[];
@@ -39,6 +42,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.add(this.queueService.init().subscribe(success => success ? this.searchService.filter('') : null));
     this.subscriptions.add(this.queueService.songSubject.subscribe(song => this.selectedSong = song));
+    this.audioService.updateSubject.subscribe(() => this.changeDetectorRef.detectChanges());
   }
 
   ngOnDestroy() {
