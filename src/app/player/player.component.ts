@@ -1,143 +1,71 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Playlist } from './playlist/playlist.model';
 import { PlaylistService } from './playlist/playlist.service';
 import { Subscription } from 'rxjs';
 import { Song } from './song/song.model';
+import { QueueService } from './queue/queue.service';
+import { SearchService } from './search/search.service';
+import { AudioService } from '../audio/audio.service';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PlayerComponent implements OnInit, OnDestroy {
   dblClickFlag: boolean;
 
-  constructor(private playlistService: PlaylistService) { }
+  constructor(
+    private readonly queueService: QueueService,
+    private readonly searchService: SearchService,
+    public readonly audioService: AudioService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) { }
 
-  @ViewChild('search', {static: false}) searchInput: ElementRef;
-  @ViewChild('audio', {static: false}) audioElement: ElementRef;
-  shuffle = false;
   playlists: Playlist[];
   subscriptions = new Subscription();
-  currentPlaylist: Playlist;
-  currentPlaylistUnshuffled: Playlist;
-  currentSong: Song;
-  currentPlayingSong: Song;
-  currentSongIndex = 0;
-  filteredPlaylist: Song[];
-  searchTypeIndex = 0;
-  searchTypes = ['Song', 'Artist', 'Album'];
-  searchTypeColors = ['lime', 'orange', 'orangered'];
-  searchTypeIcons = ['music_note', 'person', 'album'];
-  playing = false;
   flippedFlag = false;
+  selectedSong: Song;
+  get currentSong(): Song {
+    return this.queueService.currentSong;
+  }
+  get currentPlaylist(): Playlist {
+    return this.queueService.currentPlaylist;
+  }
+  get filteredPlaylist(): Song[] {
+    return this.searchService.filteredPlaylist;
+  }
+  get playing() {
+    return this.queueService.playing;
+  }
 
   ngOnInit() {
-    this.subscriptions.add(this.playlistService.getPlaylists().subscribe(playlist => {
-      if (playlist && playlist.length) {
-        this.playlists = playlist;
-        this.currentPlaylist = this.playlists[0];
-        this.currentPlaylistUnshuffled = JSON.parse(JSON.stringify(this.currentPlaylist));
-        this.currentSong = this.currentPlaylist.songs[this.currentSongIndex];
-        this.getFilteredPlaylist();
-      }
-    }));
+    this.subscriptions.add(this.queueService.init().subscribe(success => success ? this.searchService.filter('') : null));
+    this.subscriptions.add(this.queueService.songSubject.subscribe(song => this.selectedSong = song));
+    this.audioService.updateSubject.subscribe(() => this.changeDetectorRef.detectChanges());
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 
-  ngAfterViewInit() {
-    this.audioElement.nativeElement.onended = () => {
-      this.changeSong();
-    };
+  isPlaying(song: Song): boolean {
+    return this.queueService.isPlaying(song);
   }
 
-  changeSong(previous?: boolean) {
-    if (this.currentPlaylist && this.currentPlaylist.songs && this.currentPlaylist.songs.length) {
-      this.currentSongIndex = (this.currentSongIndex + (previous ? -1 : 1)) % this.currentPlaylist.songs.length;
-      this.currentSongIndex = this.currentSongIndex >= 0 ? this.currentSongIndex :
-        (this.currentPlaylist.songs.length + this.currentSongIndex);
-      this.selectSong(this.currentPlaylist.songs[this.currentSongIndex]);
-      this.play(true);
+  isSelected(song: Song): boolean {
+    if (this.selectedSong) {
+      return this.selectedSong.name === song.name;
     }
+    return false;
   }
 
   selectSong(song: Song) {
     this.flippedFlag = false;
-    this.currentSong = song;
-    this.currentSongIndex = this.currentPlaylist.songs.findIndex(item => item === song);
-  }
-
-  getFilteredPlaylist(filter?: string) {
-    if (!filter) {
-      this.filteredPlaylist = this.currentPlaylist.songs;
-    } else {
-      switch (this.searchTypes[this.searchTypeIndex]) {
-        case 'Artist':
-          this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
-            (song.artist ? song.artist : '').toLowerCase().indexOf(filter.toLowerCase()) !== -1);
-          break;
-        case 'Song':
-          this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
-            (song.name ? song.name : '').toLowerCase().indexOf(filter.toLowerCase()) !== -1);
-          break;
-        case 'Album':
-          this.filteredPlaylist = this.currentPlaylist.songs.filter(song =>
-            (song.album ? song.album : '').toLowerCase().indexOf(filter.toLowerCase()) !== -1);
-          break;
-      }
-    }
-  }
-
-  nextSearchType() {
-    this.searchTypeIndex = (this.searchTypeIndex + 1) % this.searchTypes.length;
-    this.searchInput.nativeElement.value = '';
-    this.getFilteredPlaylist();
-  }
-
-  searchAlbum(album: string) {
-    this.searchTypeIndex = this.searchTypes.findIndex(item => item === 'Album');
-    this.searchInput.nativeElement.value = album;
-    this.getFilteredPlaylist(album);
-  }
-
-  selectFirstSong() {
-    if (this.filteredPlaylist && this.filteredPlaylist.length) {
-      this.currentSong = this.filteredPlaylist[0];
-      this.currentSongIndex = this.currentPlaylist.songs.findIndex(item => item === this.currentSong);
-      this.play(true);
-      this.searchInput.nativeElement.value = '';
-      this.getFilteredPlaylist();
-    }
-  }
-
-  play(reset?: boolean) {
-    if (reset) {
-      this.playing = false;
-      this.audioElement.nativeElement.pause();
-      this.currentPlayingSong = null;
-      this.play();
-    } else {
-      if (this.playing) {
-        this.audioElement.nativeElement.pause();
-      } else {
-        if (!this.currentPlayingSong) {
-          this.currentPlayingSong = this.currentSong;
-          this.audioElement.nativeElement.src = this.currentPlayingSong.url;
-        }
-        this.audioElement.nativeElement.play();
-      }
-      this.playing = !this.playing;
-    }
-  }
-
-  songClick(song: Song) {
-    this.selectSong(song);
+    this.selectedSong = song;
     if (this.dblClickFlag) {
       this.dblClickFlag = false;
-      this.play(true);
+      this.queueService.changeSong(song);
     } else {
       this.dblClickFlag = true;
       setTimeout(() => {
@@ -148,33 +76,19 @@ export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  songPlaying(song: Song): boolean {
-    return this.playing && song && this.currentPlayingSong ? song.name === this.currentPlayingSong.name : false;
+  previousSong() {
+    this.queueService.previousSong();
   }
 
-  toggleShuffle(filter: string) {
-    this.shuffle = !this.shuffle;
-    if (this.shuffle) {
-      if (this.currentPlaylist && this.currentPlaylist.songs) {
-        const result = [];
-        this.currentPlaylist.songs.forEach(song => {
-          result.push({ r: Math.random(), song});
-        });
-        this.currentPlaylist.songs = result.sort((a, b) => a.r - b.r).map(item => item.song);
-        if (this.currentPlayingSong) {
-          this.currentPlaylist.songs = this.currentPlaylist.songs.filter(song => song.name !== this.currentPlayingSong.name);
-          this.currentPlaylist.songs.unshift(this.currentPlayingSong);
-        }
-      }
-    } else {
-      this.currentPlaylist = JSON.parse(JSON.stringify(this.currentPlaylistUnshuffled));
-    }
-    this.getFilteredPlaylist(filter);
+  nextSong() {
+    this.queueService.nextSong();
   }
 
-  flipLyrics() {
-    if (this.currentSong && this.currentSong.lyrics) {
-      this.flippedFlag = !this.flippedFlag;
-    }
+  togglePlay() {
+    this.queueService.playing = !this.queueService.playing;
+  }
+
+  toggleShuffle() {
+    this.queueService.shuffled = !this.queueService.shuffled;
   }
 }

@@ -1,40 +1,33 @@
 <div class="responsive-page">
     <div class="player-grid">
-        <div class="song-container" *ngIf="currentSong">
-            <div class="currently-playing" *ngIf="currentPlayingSong && playing">
-                <p>playing: <b (click)="selectSong(currentPlayingSong)">{{currentPlayingSong.name}}</b></p>
+        <div class="song-container" *ngIf="selectedSong">
+            <div class="currently-playing" *ngIf="currentSong && isPlaying(currentSong)">
+                <p>playing: <b (click)="selectSong(currentSong)">{{currentSong.name}}</b></p>
             </div>
-            <div class="flip-card" (click)="flipLyrics()" [ngClass]="{'flipped': flippedFlag}">
+            <div class="flip-card" (click)="flippedFlag = !flippedFlag" [ngClass]="{'flipped': flippedFlag}">
                 <div class="album-cover frontside">
-                    <img [src]="currentSong.cover_art_url" onerror="this.src='assets/default-album-art.png'">
+                    <img [src]="selectedSong.cover_art_url" onerror="this.src='assets/default-album-art.png'">
                 </div>
                 <div class="album-cover backside">
                     <div class="lyrics">
-                        {{currentSong.lyrics}}
+                        <i *ngIf="!selectedSong.lyrics" class="material-icons">info</i>
+                        {{selectedSong.lyrics || 'No lyrics'}}
                     </div>
                 </div>
             </div>
             <div class="info-container large-font">
-                <div class="info-container-item bold">{{currentSong.name}}</div>
-                <div class="info-container-item">{{currentSong.artist}}</div>
-                <div class="info-container-item">{{currentSong.album || '(No album)'}}
-                    <i class="material-icons" (click)="searchAlbum(currentSong.album)">album</i>
+                <div class="info-container-item bold">{{selectedSong.name}}</div>
+                <div class="info-container-item">{{selectedSong.artist}}</div>
+                <div class="info-container-item">{{selectedSong.album || '(No album)'}}
+                    <!-- <i class="material-icons" (click)="searchAlbum(selectedSong.album)">album</i> -->
                 </div>
             </div>
         </div>
-        <div class="song-list" *ngIf="currentPlaylist?.songs?.length">
-            <div class="song-list-search">
-                <div class="song-list-addon bold" (click)="nextSearchType()"
-                    [ngStyle]="{'background-color': searchTypeColors[searchTypeIndex]}">
-                    {{searchTypes[searchTypeIndex]}}
-                    <i class="material-icons">{{searchTypeIcons[searchTypeIndex]}}</i>
-                </div>
-                <input type="text" #search (input)="getFilteredPlaylist(search.value)"
-                    (keydown.enter)="selectFirstSong()">
-            </div>
+        <div class="song-list">
+            <app-search></app-search>
             <div *ngIf="filteredPlaylist?.length">
-                <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="songClick(song)"
-                    [ngClass]="{'song-list-item-playing': songPlaying(song)}">
+                <div class="song-list-item" *ngFor="let song of filteredPlaylist" (click)="selectSong(song)"
+                    [ngClass]="{'song-list-item-playing': isPlaying(song), 'song-list-item-selected': isSelected(song)}">
                     <b>{{song.name}}</b>
                     <br>{{song.artist}}
                 </div>
@@ -45,15 +38,14 @@
             </div>
         </div>
         <div class="controls">
-            <input type="range" class="time-bar">
-            <div class="play-previous icon right" (click)="changeSong(true)"></div>
+            <input type="range" class="time-bar" min="0" max="1" step="0.001" value="0" [(ngModel)]="audioService.progress">
+            <div class="play-previous icon right" (click)="previousSong()"></div>
             <div class="play-pause icon center" [ngClass]="{'play-icon': !playing, 'pause-icon': playing}"
-                (click)="play()"></div>
-            <div class="play-next icon left" (click)="changeSong()"></div>
+                (click)="togglePlay()"></div>
+            <div class="play-next icon left" (click)="nextSong()"></div>
             <div class="shuffle icon center" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}"
-                (click)="toggleShuffle(searchInput.nativeElement.value)"></div>
+                (click)="toggleShuffle()"></div>
             <div class="show-lyrics icon center"></div>
         </div>
-        <audio #audio></audio>
     </div>
 </div>
