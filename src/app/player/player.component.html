@@ -26,16 +26,14 @@
         <div class="song-list">
             <app-search></app-search>
             <div *ngIf="filteredPlaylist?.length">
-                <ul>
-                    <li *ngFor="let song of filteredPlaylist" [draggable]="true" (dragover)="dragOver($event)"
-                        (dragend)="dragEnd($event)" (drop)="dragDrop($event)">
-                        <div class="song-list-item" (click)="selectSong(song)"
-                            [ngClass]="{'song-list-item-playing': isPlaying(song), 'song-list-item-selected': isSelected(song)}">
-                            <b>{{song.name}}</b>
-                            <br>{{song.artist}}
-                        </div>
-                    </li>
-                </ul>
+                <div class="song-list-item" (click)="selectSong(song)" *ngFor="let song of filteredPlaylist" [draggable]="true"
+                    (dragover)="dragOver($event)" (dragend)="dragEnd($event)" (drop)="dragDrop($event)"
+                    [ngClass]="{'song-list-item-playing': isPlaying(song), 'song-list-item-selected': isSelected(song)}">
+                    <span class="song-list-item-text">
+                        <b>{{song.name}}</b>
+                        <br>{{song.artist}}
+                    </span>
+                </div>
             </div>
             <div *ngIf="!filteredPlaylist?.length" class="song-list-not-found">
                 <i class="material-icons">error</i>
@@ -43,14 +41,15 @@
             </div>
         </div>
         <div class="controls">
-            <input #progress type="range" class="time-bar" min="0" max="1" step="0.001" value="0" [(ngModel)]="audioService.progress">
+            <input #progress type="range" class="time-bar" min="0" max="1" step="0.001" value="0"
+                [(ngModel)]="audioService.progress">
+            <div class="show-lyrics icon center"></div>
             <div class="play-previous icon right" (click)="previousSong()"></div>
             <div class="play-pause icon center" [ngClass]="{'play-icon': !playing, 'pause-icon': playing}"
                 (click)="togglePlay()"></div>
             <div class="play-next icon left" (click)="nextSong()"></div>
             <div class="shuffle icon center" [ngClass]="{'shuffle-on': shuffle, 'shuffle-off': !shuffle}"
                 (click)="toggleShuffle()"></div>
-            <div class="show-lyrics icon center"></div>
         </div>
     </div>
 </div>
