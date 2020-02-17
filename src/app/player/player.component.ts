@@ -38,6 +38,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   get playing() {
     return this.queueService.playing;
   }
+  get shuffle() {
+    return this.queueService.shuffled;
+  }
 
   ngOnInit() {
     this.subscriptions.add(this.queueService.init().subscribe(success => success ? this.searchService.filter('') : null));
