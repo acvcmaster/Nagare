@@ -1,9 +1,10 @@
 <div class="song-list-search">
-    <div class="song-list-addon bold" (click)="next(search.value)"
-        [ngStyle]="{'background-color': searchService.searchColor}">
-        {{searchService.searchType}}
-        <i class="material-icons">{{searchService.searchIcon}}</i>
+    <div class="search-component">
+        <div class="song-list-addon bold" (click)="next(search.value)"
+            [ngStyle]="{'background-color': searchService.searchColor}">
+            {{searchService.searchType}}
+            <i class="material-icons">{{searchService.searchIcon}}</i>
+        </div>
+        <input type="text" #search (input)="filter(search.value)" (keydown.enter)="first()">
     </div>
-    <input type="text" #search (input)="filter(search.value)"
-        (keydown.enter)="first()">
 </div>
