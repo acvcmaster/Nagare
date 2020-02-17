@@ -167,10 +167,13 @@
     ul {
         list-style: none;
     }
+    .song-list-item:first-child {
+        border-top: 1.5px solid white;
+    }
     .song-list-item {
         height: 100%;
-        border-left: 1px solid white;
-        border-bottom: 1px solid white;
+        border-left: 1.5px solid white;
+        border-bottom: 1.5px solid white;
         padding-left: 5%;
         user-select: none;
         display: flex;
@@ -185,7 +188,7 @@
         color: black;
     }
     .song-list-item-playing {
-        background-image: linear-gradient(to right,lightgrey, white);
+        background-image: linear-gradient(to right,grey, white);
         color: black;
     }
     .song-list-not-found {
