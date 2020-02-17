@@ -9,9 +9,9 @@
                     <img [src]="selectedSong.cover_art_url" onerror="this.src='assets/default-album-art.png'">
                 </div>
                 <div class="album-cover backside">
-                    <div class="lyrics">
+                    <div class="lyrics" [ngClass]="{'no-lyrics': !selectedSong.lyrics}">
                         <i *ngIf="!selectedSong.lyrics" class="material-icons">info</i>
-                        {{selectedSong.lyrics || 'No lyrics'}}
+                        <span class="lyrics-text">{{selectedSong.lyrics || 'No lyrics'}}</span>
                     </div>
                 </div>
             </div>

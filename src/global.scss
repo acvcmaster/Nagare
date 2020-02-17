@@ -123,3 +123,21 @@
     -khtml-user-drag: element;
     -webkit-user-drag: element;
   }
+
+
+  // #region scrollbar
+
+::-webkit-scrollbar {
+    width: 0.2em !important;
+    scroll-behavior: smooth !important;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: lightgrey;
+    border-radius: 10px !important;
+}
+  // #endregion

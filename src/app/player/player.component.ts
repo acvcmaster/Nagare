@@ -63,7 +63,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   selectSong(song: Song) {
-    this.flippedFlag = false;
     this.selectedSong = song;
     if (this.dblClickFlag) {
       this.dblClickFlag = false;

@@ -82,11 +82,21 @@
             height: 100%;
             widows: 100%;
             .lyrics {
+                height: 100%;
+                width: 100%;
                 display: flex;
                 justify-content: center;
-                align-items: center;
+                text-align: center;
+                overflow-y: scroll;
+                user-select: none;
+                white-space: pre-wrap;
                 i {
                     padding-right: 1%;
+                }
+                .lyrics-text {
+                    padding-bottom: 5%;
+                    padding-top: 5%;
+                    height: fit-content;
                 }
             }
         }
@@ -155,7 +165,12 @@
     }
 }
 
-@media only screen and (max-width: 1024px) {
+.no-lyrics {
+    align-items: center;
+    overflow: hidden !important;
+}
+
+@media only screen and (max-width: 1000px) {
     .player-grid {
         grid-template-columns: 100vw;
         grid-template-rows: 70vh 30vh;
