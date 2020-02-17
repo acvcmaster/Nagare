@@ -17,9 +17,13 @@
             </div>
             <div class="info-container large-font">
                 <div class="info-container-item bold">{{selectedSong.name}}</div>
-                <div class="info-container-item">{{selectedSong.artist}}</div>
+                <div class="info-container-item">{{selectedSong.artist}}
+                    <i *ngIf="selectedSong.artist" class="material-icons"
+                        (click)="searchService.filter(selectedSong.artist, 'Artist')">person</i>
+                </div>
                 <div class="info-container-item">{{selectedSong.album || '(No album)'}}
-                    <!-- <i class="material-icons" (click)="searchAlbum(selectedSong.album)">album</i> -->
+                    <i *ngIf="selectedSong.album" class="material-icons"
+                        (click)="searchService.filter(selectedSong.album, 'Album')">album</i>
                 </div>
             </div>
         </div>

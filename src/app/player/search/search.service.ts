@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 import { QueueService } from '../queue/queue.service';
 import { Song } from '../song/song.model';
 
@@ -14,6 +14,7 @@ export class SearchService {
     private _searchColors = ['limegreen', 'orange', 'orangered'];
     private _searchIcons = ['music_note', 'person', 'album'];
     public filteredPlaylist: Song[] = [];
+    public searchElement: ElementRef;
 
     public next(value: string) {
         const length = this._searchTypes.length;
@@ -31,7 +32,12 @@ export class SearchService {
         return this._searchIcons[this.searchIndex];
     }
 
-    public filter(value: string) {
+    public filter(value: string, type?: 'Song' | 'Artist' | 'Album') {
+        if (type) {
+            this.searchIndex = this._searchTypes.findIndex(t => t === type);
+            if (this.searchElement) { this.searchElement.nativeElement.value = value; }
+        }
+
         if (!value) {
             this.filteredPlaylist = this.queueService.currentPlaylist.songs || [];
         } else {

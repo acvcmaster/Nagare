@@ -17,7 +17,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly queueService: QueueService,
-    private readonly searchService: SearchService,
+    public readonly searchService: SearchService,
     public readonly audioService: AudioService
   ) { }
 
